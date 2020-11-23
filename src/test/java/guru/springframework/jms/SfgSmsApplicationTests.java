@@ -1,4 +1,4 @@
-package guru.springframework.demo;
+package guru.springframework.jms;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
