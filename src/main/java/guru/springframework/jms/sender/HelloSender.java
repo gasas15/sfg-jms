@@ -50,20 +50,17 @@ public class HelloSender {
             .message("Hello")
             .build();
 
-        Message receivedMessage = jmsTemplate.sendAndReceive(JmsConfig.MY_SEND_RCVQUEUE, new MessageCreator() {
-            @Override
-            public Message createMessage(Session session) throws JMSException {
-                Message helloMessage = null;
-                try {
-                    helloMessage = session.createTextMessage(objectMapper.writeValueAsString(message));
-                    helloMessage.setStringProperty("_type", "guru.springframework.jms.model.HelloWorldMessage");
+        Message receivedMessage = jmsTemplate.sendAndReceive(JmsConfig.MY_SEND_RCVQUEUE, session -> {
+            Message helloMessage = null;
+            try {
+                helloMessage = session.createTextMessage(objectMapper.writeValueAsString(message));
+                helloMessage.setStringProperty("_type", "guru.springframework.jms.model.HelloWorldMessage");
 
-                    System.out.println("Sending Hello!");
+                System.out.println("Sending Hello!");
 
-                    return helloMessage;
-                } catch (JsonProcessingException e) {
-                    throw new JMSException("boom");
-                }
+                return helloMessage;
+            } catch (JsonProcessingException e) {
+                throw new JMSException("boom");
             }
         });
 
